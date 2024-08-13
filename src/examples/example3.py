@@ -1,24 +1,20 @@
 import datetime
 
+import autogen
 from autogen import ConversableAgent
 from autogen.coding import LocalCommandLineCodeExecutor
 
-local_llm_config = {
-    "config_list": [
-        {
-            "model": "NotRequired",  # Loaded with LiteLLM command
-            "api_key": "NotRequired",  # Not needed
-            "base_url": "http://0.0.0.0:4000",  # Your LiteLLM URL
-            "price": [0, 0],  # Put in price per 1K tokens [prompt, response] as free!
-        }
-    ],
-    "cache_seed": None,  # Turns off caching, useful for testing different models
-}
+config_list = autogen.config_list_from_json(
+    env_or_file='./config/OAI_CONFIG_LIST.json',
+    filter_dict={'model': 'NotRequired'},
+)
+
+llm_config = config_list[0]
 
 # Create a local command line code executor.
 executor = LocalCommandLineCodeExecutor(
     timeout=10,  # Timeout for each code execution in seconds.
-    work_dir='./example3_workdir',  # Use the temporary directory to store the code files.
+    work_dir='./src/examples/example3_workdir',  # Use the temporary directory to store the code files.
 )
 
 # Create an agent with code executor configuration.
@@ -47,7 +43,7 @@ Reply 'TERMINATE' in the end when everything is done.
 code_writer_agent = ConversableAgent(
     "code_writer_agent",
     system_message=code_writer_system_message,
-    llm_config=local_llm_config,
+    llm_config=llm_config,
     code_execution_config=False,  # Turn off code execution for this agent.
 )
 
@@ -57,4 +53,5 @@ chat_result = code_executor_agent.initiate_chat(
     code_writer_agent,
     message=f"Today is {today}. Write Python code to plot TSLA's and META's "
     "stock price gains YTD, and save the plot to a file named 'stock_gains.png'.",
+    cache=None,
 )

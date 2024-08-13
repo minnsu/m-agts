@@ -1,2 +1,2 @@
-# litellm --model ollama/phi3:medium-128k
+# litellm --model ollama/llama3.1:8b-instruct-q8_0
 python3 ./src/main.py
