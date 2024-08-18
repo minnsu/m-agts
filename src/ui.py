@@ -1,7 +1,7 @@
 import os
 import sys
 import json
-from autogen import Agent, ConversableAgent, UserProxyAgent, AssistantAgent, GroupChatManager
+from autogen import Agent, ConversableAgent, UserProxyAgent, AssistantAgent, GroupChatManager, GroupChat
 
 def make_llm_config():
     """
@@ -93,6 +93,7 @@ def make_chat_config():
     chat["receive_agent"] = input("받을 에이전트 이름을 입력하세요(GroupChat의 경우 빈칸 입력): ")
     chat["init_message"] = input("시작 메시지를 입력하세요: ")
     chat["max_round"] = input("최대 라운드 수를 입력하세요: ")
+    chat["llm_config"] = make_llm_config()
     # chat["summary_method"] = input("요약 방법을 입력하세요: ")
 
     return chat
@@ -102,7 +103,7 @@ def make_config():
     설정을 만듭니다.
     """
     cur_dir = os.path.dirname(os.path.abspath(__file__))
-    path = input(f"[{cur_dir}]설정 파일을 저장할 경로를 입력하세요: ")
+    path = input(f"[{cur_dir}] 설정 파일을 저장할 경로를 입력하세요: ")
     
     config = {}
     config['agent'] = make_agent_config()
@@ -113,11 +114,52 @@ def make_config():
 
 # --------------------------------------------------
 
-def load_chat_config(path: str=None) -> dict:
+def load_agent(config: dict) -> tuple[str, Agent]:
     """
-    채팅 설정을 로드합니다.
+    에이전트를 로드합니다.
     """
-    pass
+    agent = None
+    agent_class = None
+    if config["type"] == "ConversableAgent":
+        agent_class = ConversableAgent
+    elif config["type"] == "UserProxyAgent":
+        agent_class = UserProxyAgent
+    elif config["type"] == "AssistantAgent":
+        agent_class = AssistantAgent
+    
+    del config["type"]
+    agent = agent_class(**config)
+
+    return config['name'], agent
+
+def make_and_run_chat(agents: dict, chat_config: dict):
+    """
+    채팅을 만듭니다.
+    """
+    chat = GroupChat(
+        agents=list(agents.values()),
+        messages=[],
+        max_round=chat_config["max_round"]
+    )
+
+    manager = GroupChatManager(
+        groupchat=chat,
+        llm_config=chat_config["llm_config"]
+    )
+    
+    initiate_agent = agents[chat_config["initiate_agent"]]
+    try:
+        receive_agent = agents[chat_config["receive_agent"]]
+    except KeyError:
+        receive_agent = manager
+    init_message = chat_config["init_message"]
+
+    initiate_agent.initiate_chat(
+        recipient=receive_agent,
+        messages=[init_message],
+        summary_method=chat_config["summary_method"],
+        cache=None
+    )
 
 def load_config(path: str=None):
     """
@@ -133,18 +175,19 @@ def load_config(path: str=None):
             print("경로가 존재하지 않습니다.")
             path = None
     
-    chat_config = load_chat_config(path)
+    with open(path, 'r') as f:
+        config = json.load(f)
 
-    initiate_agent = chat_config["initiate_agent"]
-    receive_agent = chat_config["receive_agent"]
-    init_message = chat_config["init_message"]
+    # agent config로부터 agent 객체를 생성
+    agents_config = config['agents']
+    agents_mapping = {}
+    for agent_config in agents_config:
+        name, agent = load_agent(agent_config)
+        agents_mapping[name] = agent
     
-    initiate_agent.initiate_chat(
-        recipient=receive_agent,
-        messages=[init_message],
-        summary_method=chat_config["summary_method"],
-        cache=None
-    )
+    # chat config로부터 chat 생성 및 실행
+    chat_config = config['chat']
+    make_and_run_chat(agents_mapping, chat_config)
 
 def main():
     """

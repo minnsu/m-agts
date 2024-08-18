@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>advanced_llm_config</class>
+ <widget class="QDialog" name="advanced_llm_config">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>247</width>
+    <height>200</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Advanced LLM Config</string>
+  </property>
+  <widget class="QGroupBox" name="gb_advanced_llm_config">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>231</width>
+     <height>151</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Advanced LLM Config</string>
+   </property>
+   <widget class="QLabel" name="label_temperature">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>91</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Temperature</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="le_temperature">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>30</y>
+      <width>101</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="placeholderText">
+     <string>0~2</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_top_p">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>60</y>
+      <width>57</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Top p</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="le_top_p">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>60</y>
+      <width>101</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="placeholderText">
+     <string>0.1</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_timeout">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>90</y>
+      <width>71</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Timeout (s)</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="le_timeout">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>90</y>
+      <width>101</width>
+      <height>23</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_max_tokens">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>120</y>
+      <width>71</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Max tokens</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="le_max_tokens">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>120</y>
+      <width>101</width>
+      <height>23</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="btn_set">
+   <property name="geometry">
+    <rect>
+     <x>189</x>
+     <y>170</y>
+     <width>51</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Set</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
