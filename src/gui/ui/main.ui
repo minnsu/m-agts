@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Main</string>
   </property>
-  <widget class="QPushButton" name="btn_create_edit_chat_config">
+  <widget class="QPushButton" name="btn_create_edit_chat">
    <property name="geometry">
     <rect>
      <x>10</x>

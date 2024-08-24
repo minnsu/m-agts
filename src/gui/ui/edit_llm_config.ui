@@ -155,7 +155,7 @@
      <string>Base URL (for local LLM, optional)</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_3">
+   <widget class="QLineEdit" name="le_base_url">
     <property name="geometry">
      <rect>
       <x>220</x>
@@ -208,7 +208,7 @@
     <string>Add</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="comboBox">
+  <widget class="QComboBox" name="cb_llm_config">
    <property name="geometry">
     <rect>
      <x>10</x>
