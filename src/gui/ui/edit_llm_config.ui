@@ -195,7 +195,7 @@
     </property>
    </widget>
   </widget>
-  <widget class="QPushButton" name="btn_add_llm_config">
+  <widget class="QPushButton" name="btn_edit_llm_config">
    <property name="geometry">
     <rect>
      <x>410</x>
@@ -205,7 +205,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Add</string>
+    <string>Edit</string>
    </property>
   </widget>
   <widget class="QComboBox" name="cb_llm_config">

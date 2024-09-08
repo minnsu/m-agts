@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
 
-form_create_edit_chat_class = uic.loadUiType("ui/load_chat.ui")[0]
+form_create_edit_chat_class = uic.loadUiType("gui/ui/load_chat.ui")[0]
 class LoadChat(QDialog, form_create_edit_chat_class):
     def __init__(self) :
         super().__init__()

@@ -334,6 +334,11 @@
      </property>
      <item>
       <property name="text">
+       <string>None</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
        <string>LocalCommandLineCodeExecutor</string>
       </property>
      </item>
@@ -386,6 +391,9 @@
      </property>
     </widget>
     <widget class="QComboBox" name="cb_tools">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>210</x>
@@ -394,8 +402,14 @@
        <height>23</height>
       </rect>
      </property>
+     <property name="editable">
+      <bool>false</bool>
+     </property>
     </widget>
     <widget class="QPushButton" name="btn_add_tool">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>470</x>

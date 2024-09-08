@@ -3,3 +3,4 @@
 export_api_key.sh
 **/__pycache__/
 config/OAI_CONFIG_LIST.json
+**/*.json
