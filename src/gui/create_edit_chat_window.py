@@ -37,6 +37,8 @@ class CreateEditChat(QDialog, form_create_edit_chat_class):
         Read the file and set the values to the LLM Config list
         """
         fname = QFileDialog.getOpenFileName(self)
+        if fname[0] == "":
+            return
         self.label_llm_config_path.setText(fname[0])
         self.llm_config_list_path = fname[0]
 
@@ -54,6 +56,10 @@ class CreateEditChat(QDialog, form_create_edit_chat_class):
 
         After editing, save the values to the LLM Config list and file.
         """
+        if self.llm_config_list_path == "":
+            QMessageBox.warning(self, "Error", "Select LLM Config file first")
+            return
+
         self.edit_llm_config = EditLLMConfig(self)
         self.edit_llm_config.exec()
 
@@ -123,6 +129,8 @@ class CreateEditChat(QDialog, form_create_edit_chat_class):
         Load Chat Config file
         """
         fname = QFileDialog.getOpenFileName(self)
+        if fname[0] == "":
+            return
         self.label_chat_config_path.setText(fname[0])
         self.clear_inputs(mode='all')
 

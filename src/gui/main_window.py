@@ -5,8 +5,6 @@ from PyQt5 import uic
 from .create_edit_chat_window import CreateEditChat
 from .load_chat_window import LoadChat
 
-from llms import hello
-
 form_main_class = uic.loadUiType("gui/ui/main.ui")[0]
 class Main(QMainWindow, form_main_class) :
     def __init__(self) :
