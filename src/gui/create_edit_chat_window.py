@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QDoubleValidator, QIntValidator
 from PyQt5 import uic
 
-form_create_edit_chat_class = uic.loadUiType("gui/ui/create_edit_chat.ui")[0]
+form_create_edit_chat_class = uic.loadUiType("src/gui/ui/create_edit_chat.ui")[0]
 class CreateEditChat(QDialog, form_create_edit_chat_class):
     def __init__(self) :
         super().__init__()
@@ -208,7 +208,7 @@ class CreateEditChat(QDialog, form_create_edit_chat_class):
             self.pte_init_message.clear()
 
 
-form_edit_llm_config_class = uic.loadUiType("gui/ui/edit_llm_config.ui")[0]
+form_edit_llm_config_class = uic.loadUiType("src/gui/ui/edit_llm_config.ui")[0]
 class EditLLMConfig(QDialog, form_edit_llm_config_class):
     def __init__(self, _parent) :
         super().__init__()
@@ -285,7 +285,7 @@ class EditLLMConfig(QDialog, form_edit_llm_config_class):
         except ValueError:
             QMessageBox.warning(self, "Error", "Invalid Input type")
 
-form_advanced_llm_config_class = uic.loadUiType("gui/ui/advanced_llm_config.ui")[0]
+form_advanced_llm_config_class = uic.loadUiType("src/gui/ui/advanced_llm_config.ui")[0]
 class AdvancedLLMConfig(QDialog, form_advanced_llm_config_class):
     def __init__(self) :
         super().__init__()

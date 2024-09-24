@@ -5,7 +5,7 @@ from PyQt5 import uic
 from .create_edit_chat_window import CreateEditChat
 from .load_chat_window import LoadChat
 
-form_main_class = uic.loadUiType("gui/ui/main.ui")[0]
+form_main_class = uic.loadUiType("src/gui/ui/main.ui")[0]
 class Main(QMainWindow, form_main_class) :
     def __init__(self) :
         super().__init__()

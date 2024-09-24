@@ -1,4 +1,5 @@
 import json
+from copy import deepcopy
 
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
@@ -27,13 +28,14 @@ class ChatWorker(QThread):
             recipient,
             message=self.init_message,
             summary_method=self.chat_objects['summary_method'],
+            clear_history=False,
         )
         self.summary_signal.emit(chat_result.summary)
     
     def message_signal_handler(self, recipient, messages, sender, config):
         self.message_signal.emit(recipient, messages, sender, config)
 
-form_create_edit_chat_class = uic.loadUiType("gui/ui/load_chat.ui")[0]
+form_create_edit_chat_class = uic.loadUiType("src/gui/ui/load_chat.ui")[0]
 class LoadChat(QDialog, form_create_edit_chat_class):
     def __init__(self) :
         super().__init__()
@@ -48,7 +50,7 @@ class LoadChat(QDialog, form_create_edit_chat_class):
 
         self.chat_config = None
         self.chat_objects = None
-        self.chat_start_flag = False
+        self.is_running = False
 
         self.chat_worker = None
 
@@ -71,7 +73,7 @@ class LoadChat(QDialog, form_create_edit_chat_class):
         self.tb_chat.clear()
         if self.chat_objects:
             self.pte_user_input.setPlainText(self.chat_objects['init_message'])
-        self.chat_start_flag = False
+        self.is_running = False
         self.chat_worker = None
 
     def _btn_stop(self):
@@ -94,14 +96,12 @@ class LoadChat(QDialog, form_create_edit_chat_class):
         init_message = self.pte_user_input.toPlainText()
         self.pte_user_input.clear()
 
-        if self.chat_start_flag == False:
-            self.chat_start_flag = True
-            self.chat_worker = ChatWorker(self.chat_objects, init_message)
-            self.chat_worker.message_signal.connect(self.message_append_handler)
-            self.chat_worker.summary_signal.connect(self.summary_append_handler)
-            self.chat_worker.start()
+        if self.is_running == False:
+            self.is_running = True
+            self.chat_init_and_start(init_message)
         else:
-            print("btn enter pressed.")
+            # TODO: when human_input_mode is 'TERMINATE', 'ALWAYS', processing the input
+            print('btn enter pressed')
     
     def message_callback(self, recipient, messages, sender, config):
         """
@@ -130,3 +130,10 @@ class LoadChat(QDialog, form_create_edit_chat_class):
             f'          -------------------------------------------[Summary]-------------------------------------------\n'
             + summary
         )
+        self.is_running = False
+
+    def chat_init_and_start(self, init_message):
+        self.chat_worker = ChatWorker(self.chat_objects, init_message)
+        self.chat_worker.message_signal.connect(self.message_append_handler)
+        self.chat_worker.summary_signal.connect(self.summary_append_handler)
+        self.chat_worker.start()
