@@ -58,7 +58,7 @@ def make_chat(chat_config, message_callback):
         group_chat = GroupChat(
             agents=agents_list,
             messages=[],
-            max_round=chat_config['max_round'],
+            max_round=chat_config['max_round']+1,
             allow_repeat_speaker=False,
         )
         group_chat_manager = GroupChatManager(
