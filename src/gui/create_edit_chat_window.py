@@ -71,8 +71,10 @@ class CreateEditChat(QDialog, form_create_edit_chat_class):
             self.cb_llm_config.addItem(llm_config["model"])
 
     def _btn_advanced_llm_config(self):
-        self.advanced_llm_config = AdvancedLLMConfig()
+        self.advanced_llm_config = AdvancedLLMConfig(self, self.cb_llm_config.currentIndex())
         self.advanced_llm_config.exec()
+
+        print(self.llm_config_list)
 
     def _btn_add_tool(self):
         print("Error: Not Implemented [CreateEditChat._btn_add_tool]")
@@ -287,9 +289,11 @@ class EditLLMConfig(QDialog, form_edit_llm_config_class):
 
 form_advanced_llm_config_class = uic.loadUiType("src/gui/ui/advanced_llm_config.ui")[0]
 class AdvancedLLMConfig(QDialog, form_advanced_llm_config_class):
-    def __init__(self) :
+    def __init__(self, _parent, index) :
         super().__init__()
         self.setupUi(self)
+        self._parent = _parent
+        self.index = index
 
         self.btn_set.clicked.connect(self._btn_set)
 
@@ -301,10 +305,8 @@ class AdvancedLLMConfig(QDialog, form_advanced_llm_config_class):
                 "timeout": int(self.le_timeout.text()),
                 "max_tokens": int(self.le_max_tokens.text()),
             }
-            print(advanced_llm_config)
+            self._parent.llm_config_list[self.index].update(advanced_llm_config)
         except ValueError:
             QMessageBox.warning(self, "Error", "Invalid Input type")
         
-        # TODO: 값이 존재한다면 agent의 llm_config의 형식이 달라질 수 있음을 고려하여 수정해야 함
-        # {"llm_config": 기존, "temperature": float, "top_p": float, "timeout": int, "max_tokens": int}와 같이?
-        # 문서 확인하여 최대한 비슷하게 구현할 것
+        self.close()
