@@ -54,8 +54,12 @@ class LoadChat(QDialog, form_create_edit_chat_class):
 
         self.chat_worker = None
 
+        self.chat_str = ''
+        self.te_chat.setReadOnly(True)
+
     def _btn_select_config(self):
-        self.tb_chat.clear()
+        self.te_chat.clear()
+        self.chat_str = ''
         self.pte_user_input.clear()
 
         fname = QFileDialog.getOpenFileName(self)
@@ -70,7 +74,7 @@ class LoadChat(QDialog, form_create_edit_chat_class):
         self.pte_user_input.setPlainText(self.chat_objects['init_message'])
 
     def _btn_reset(self):
-        self.tb_chat.clear()
+        self.te_chat.clear()
         if self.chat_objects:
             self.pte_user_input.setPlainText(self.chat_objects['init_message'])
         self.is_running = False
@@ -78,9 +82,8 @@ class LoadChat(QDialog, form_create_edit_chat_class):
 
     def _btn_stop(self):
         if self.chat_worker:
-            self.tb_chat.append(
-                'Chatting stopped.\n'
-            )
+            self.chat_str += '<br></br><br></br><span style="color: red">Chatting stopped.</span><br></br><br></br>'
+            self.te_chat.setMarkdown(self.chat_str)
             self.chat_worker.terminate()
             self.chat_worker = None
     
@@ -117,19 +120,15 @@ class LoadChat(QDialog, form_create_edit_chat_class):
         """
         sender_name = messages[-1]['name']
         new_text = messages[-1]['content']
-        self.tb_chat.append(
-            f'          -------------------------------------------[{sender_name}]-------------------------------------------\n'
-            + new_text
-        )
+        self.chat_str += f'<span style="color: tomato; font-size: 16px">{sender_name}</span><br></br>' + new_text + '<br></br><br></br>'
+        self.te_chat.setMarkdown(self.chat_str)
     
     def summary_append_handler(self, summary):
         """
         Main thread function to append summary to the chat window.
         """
-        self.tb_chat.append(
-            f'          -------------------------------------------[Summary]-------------------------------------------\n'
-            + summary
-        )
+        self.chat_str += f'<span style="color: green; font-size: 16px">Summary</span><br></br>' + summary
+        self.te_chat.setMarkdown(self.chat_str)
         self.is_running = False
 
     def chat_init_and_start(self, init_message):
